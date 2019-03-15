@@ -12,10 +12,6 @@ import com.pawegio.kandroid.toast
 import java.io.InputStream
 
 
-// In this example we will use on-device text recognition.
-// Images with text are located inside the assets folder of the project
-// and are taken from: https://firebase.google.com/docs/ml-kit/recognize-text
-
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,12 +23,22 @@ class MainActivity : AppCompatActivity() {
         button2.setOnClickListener { recognizeText2() }
     }
 
-    private fun recognizeText1() {
-        val bitmap = getBitmapFromAsset("photo.jpg")
+    private fun recognizeText1() = recognizeTextFromAssetImage("photo.jpg")
+
+    private fun recognizeText2() = recognizeTextFromAssetImage("document.jpg")
+
+    // Images with text are located inside the assets folder of the project
+    // and are taken from: https://firebase.google.com/docs/ml-kit/recognize-text
+    private fun recognizeTextFromAssetImage(filePath: String) {
+        val bitmap = getBitmapFromAsset(filePath)
 
         if (bitmap != null) {
             val image = FirebaseVisionImage.fromBitmap(bitmap)
 
+            // In this example images are already properly rotated,
+            // so no need to compensate camera rotation.
+
+            // Use on-device text recognition
             val detector = FirebaseVision.getInstance().onDeviceTextRecognizer
 
             detector.processImage(image)
@@ -43,11 +49,6 @@ class MainActivity : AppCompatActivity() {
                     toast("Error recognizing text")
                 }
         }
-    }
-
-    private fun recognizeText2() {
-        // TODO
-
     }
 
     private fun getBitmapFromAsset(filePath: String): Bitmap? {
@@ -63,5 +64,4 @@ class MainActivity : AppCompatActivity() {
 
         return bitmap
     }
-
 }
