@@ -35,6 +35,9 @@ dependencies {
 
     // Firebase ML Kit (Vision)
     implementation 'com.google.firebase:firebase-ml-vision:19.0.2'
+
+    // KAndroid
+    implementation 'com.pawegio.kandroid:kandroid:0.8.8@aar'
 }
 
 apply plugin: 'com.google.gms.google-services'

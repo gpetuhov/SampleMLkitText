@@ -1,16 +1,14 @@
 package com.gpetuhov.android.samplemlkittext
 
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.google.firebase.ml.vision.FirebaseVision
 import com.google.firebase.ml.vision.common.FirebaseVisionImage
 import kotlinx.android.synthetic.main.activity_main.*
-import java.io.File
 import java.io.IOException
 import android.graphics.BitmapFactory
 import android.graphics.Bitmap
-import android.content.res.AssetManager
+import com.pawegio.kandroid.toast
 import java.io.InputStream
 
 
@@ -35,18 +33,14 @@ class MainActivity : AppCompatActivity() {
         if (bitmap != null) {
             val image = FirebaseVisionImage.fromBitmap(bitmap)
 
-            val detector = FirebaseVision.getInstance()
-                .onDeviceTextRecognizer
+            val detector = FirebaseVision.getInstance().onDeviceTextRecognizer
 
-            val result = detector.processImage(image)
+            detector.processImage(image)
                 .addOnSuccessListener { firebaseVisionText ->
-                    // Task completed successfully
                     resultTextView.text = firebaseVisionText.text
                 }
                 .addOnFailureListener {
-                    // Task failed with an exception
-                    // ...
-                    // TODO
+                    toast("Error recognizing text")
                 }
         }
     }
@@ -56,15 +50,15 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun getBitmapFromAsset(filePath: String): Bitmap? {
-        val istr: InputStream
+    private fun getBitmapFromAsset(filePath: String): Bitmap? {
+        val inputStream: InputStream
         var bitmap: Bitmap? = null
 
         try {
-            istr = assets.open(filePath)
-            bitmap = BitmapFactory.decodeStream(istr)
+            inputStream = assets.open(filePath)
+            bitmap = BitmapFactory.decodeStream(inputStream)
         } catch (e: IOException) {
-            // TODO: handle exception
+            toast("Error opening image file")
         }
 
         return bitmap
