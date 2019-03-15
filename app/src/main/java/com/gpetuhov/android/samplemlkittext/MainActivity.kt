@@ -19,8 +19,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         button1.setOnClickListener { recognizeText1() }
-
         button2.setOnClickListener { recognizeText2() }
+        clearButton.setOnClickListener { resultTextView.text = "" }
     }
 
     private fun recognizeText1() = recognizeTextFromAssetImage("photo.jpg")
